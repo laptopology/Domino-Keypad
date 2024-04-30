@@ -52,7 +52,7 @@ light:
 button:
   - platform: restart
     name: "${friendly_name} Restart"
-  - platform: template
+  - platform: output
     name: "${friendly_name} Buzz"
     on_press:
       - if:
