@@ -1,1 +1,78 @@
-start
+substitutions:
+  devicename: "keypadtext1"
+  friendly_name:  "Domino Keypad"
+esphome:
+  name: ${devicename}
+  includes:
+    - ./keypads/keypadtext2.h
+  libraries:
+    - "Keypad"
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+logger:
+# we disable logging because we listen to RX (GPIO3) pin directly
+  baud_rate: 0
+api:
+  password: !secret api_password  
+ota:
+  password: !secret ota_password
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  ap:
+    ssid: "${devicename} Fallback"
+    password: !secret ap_password
+captive_portal:
+web_server:
+  port: 80
+  auth: 
+    username: admin
+    password: admin
+
+text_sensor:
+  - platform: custom
+    lambda: |-
+      auto my_sensor = new KeypadTextSensor();
+      App.register_component(my_sensor);
+      return {my_sensor};
+    text_sensors:
+      name: "Keypad Code"
+
+light:
+- platform: neopixelbus
+  variant: WS2812
+  pin: GPIO32
+  num_leds: 1
+  id: keypad_led
+  internal: True
+  name: "${friendly_name} Status LED"
+ 
+# Define switches to control LED and buzzer
+switch:
+- platform: template
+  name: "${friendly_name} Buzzer"
+  id: buzzer_enabled
+  icon: mdi:volume-high
+  optimistic: true
+  entity_category: config
+- platform: template
+  name: "${friendly_name} LED enabled"
+  id: led_enabled
+  icon: mdi:alarm-light-outline
+  optimistic: true
+  entity_category: config
+  
+output:
+  - platform: ledc
+    # One buzzer leg connected to GPIO26, the other to GND
+    pin: GPIO26
+    id: buzzer
+
+rtttl:
+  output: buzzer
+
+button:
+  - platform: restart
+    name: "${friendly_name} Restart"
