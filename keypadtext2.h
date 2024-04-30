@@ -1,0 +1,63 @@
+#include "esphome.h"
+#include "Keypad.h"
+
+class KeypadTextSensor : public Component, public TextSensor {
+
+    public:
+
+    std::string keysequenz;
+
+    static const byte n_rows = 4;
+    static const byte n_cols = 4;
+
+    static const unsigned int resetTime = 300;
+    unsigned int resetCounter = 0;
+    bool keyPressed = false;
+    
+    char keys[n_rows][n_cols] = {
+    {'1', '2', '3', 'A'},
+    {'4', '5', '6', 'B'},
+    {'7', '8', '9', 'C'},
+    {'*', '0', '#', 'D'}
+    };
+
+    byte colPins[n_cols] = {13, 14, 25, 27}; 
+    byte rowPins[n_rows] = {12, 18, 19, 23};
+    
+    Keypad myKeypad = Keypad( makeKeymap(keys), rowPins, colPins, n_rows, n_cols); 
+
+    void setup() override {
+    // This will be called by App.setup()
+    }
+    void loop() override {
+    // This will be called by App.loop()
+        char myKey = myKeypad.getKey();
+        if (myKey != NO_KEY){
+            if (myKey == '#'){
+                publish_state(keysequenz);
+                keysequenz.clear();
+                resetCounter = 0;
+                keyPressed = false;
+            }
+            else if (myKey == '*'){
+                keysequenz.clear();
+                publish_state(keysequenz);
+                resetCounter = 0;
+                keyPressed = false;
+            }
+            else {
+                keysequenz.push_back(myKey);
+                keyPressed = true;
+            }
+        }
+        if (keyPressed){
+            resetCounter++;
+        }
+        if (resetCounter >= resetTime){
+            keysequenz.clear();
+            publish_state(keysequenz);
+            resetCounter = 0;
+            keyPressed = false;
+        }
+    }
+};
