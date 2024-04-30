@@ -1,29 +1,34 @@
+# Configuration
 substitutions:
-  devicename: "keypadtext1"
+  name: "domino-keypad"
   friendly_name:  "Domino Keypad"
 esphome:
-  name: ${devicename}
+  name: ${name}
+  friendly_name: "${friendly_name}"
+  name_add_mac_suffix: false
+  project:
+    name: "HomeConnected.Domino_Keypad"
+    version: "2024.25.4"
   includes:
-    - ./keypads/keypadtext2.h
+    - ./keypadtext2.h
   libraries:
     - "Keypad"
+dashboard_import:
+  import_full_config: true
+  package_import_url: github://laptopology/Domino-Keypad/dominokeypad.yaml@main
 esp32:
   board: esp32dev
   framework:
     type: arduino
 logger:
 # we disable logging because we listen to RX (GPIO3) pin directly
-  baud_rate: 0
+#  baud_rate: 0
 api:
-  password: !secret api_password  
 ota:
-  password: !secret ota_password
 wifi:
-  ssid: !secret wifi_ssid
-  password: !secret wifi_password
   ap:
-    ssid: "${devicename} Fallback"
-    password: !secret ap_password
+    ssid: "${name} Fallback"
+    password: "12345678"
 captive_portal:
 web_server:
   port: 80
@@ -39,6 +44,7 @@ text_sensor:
       return {my_sensor};
     text_sensors:
       name: "Keypad Code"
+
 
 light:
 - platform: neopixelbus
@@ -63,16 +69,13 @@ switch:
   icon: mdi:alarm-light-outline
   optimistic: true
   entity_category: config
-  
 output:
   - platform: ledc
     # One buzzer leg connected to GPIO26, the other to GND
     pin: GPIO26
     id: buzzer
-
 rtttl:
   output: buzzer
-
 button:
   - platform: restart
     name: "${friendly_name} Restart"
