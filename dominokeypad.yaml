@@ -52,13 +52,34 @@ light:
   pin: GPIO32
   num_leds: 1
   id: keypad_led
-  internal: True
+  #internal: True
   name: "${friendly_name} Status LED"
- 
+button:
+  - platform: restart
+    name: "${friendly_name} Restart"
+  - platform: template
+    name: "${friendly_name} Buzz"
+    on_press:
+      - if:
+          condition:
+            switch.is_on: buzzer_enabled
+          then:
+          - output.turn_on: buzzer
+          # Frequency sets the wave size
+          - output.ledc.set_frequency:
+              id: buzzer
+              frequency: "1000Hz"
+          # level sets the %age time the PWM is on
+          - output.set_level:
+              id: buzzer
+              level: "100%"
+          - delay: 750ms
+          - output.turn_off: buzzer 
+      
 # Define switches to control LED and buzzer by HA automations
 switch:
 - platform: template
-  name: "${friendly_name} Buzzer"
+  name: "${friendly_name} Buzzer enabled"
   id: buzzer_enabled
   icon: mdi:volume-high
   optimistic: true
@@ -76,6 +97,3 @@ output:
     id: buzzer
 rtttl:
   output: buzzer
-button:
-  - platform: restart
-    name: "${friendly_name} Restart"
