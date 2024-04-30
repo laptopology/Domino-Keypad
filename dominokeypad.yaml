@@ -10,7 +10,7 @@ esphome:
     name: "HomeConnected.Domino_Keypad"
     version: "2024.25.4"
   includes:
-    - ./keypadtext2.h
+    - ./keypads/keypadtext2.h
   libraries:
     - "Keypad"
 dashboard_import:
@@ -36,16 +36,16 @@ web_server:
     username: admin
     password: admin
 
+# Components
 text_sensor:
   - platform: custom
     lambda: |-
       auto my_sensor = new KeypadTextSensor();
       App.register_component(my_sensor);
       return {my_sensor};
+    # Keypad code entered before pressing 'enter'
     text_sensors:
       name: "Keypad Code"
-
-
 light:
 - platform: neopixelbus
   variant: WS2812
@@ -55,7 +55,7 @@ light:
   internal: True
   name: "${friendly_name} Status LED"
  
-# Define switches to control LED and buzzer
+# Define switches to control LED and buzzer by HA automations
 switch:
 - platform: template
   name: "${friendly_name} Buzzer"
