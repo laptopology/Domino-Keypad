@@ -1,6 +1,6 @@
 # Configuration
 substitutions:
-  name: "dominokeypad"
+  name: "domino-keypad"
   friendly_name:  "Domino Keypad"
 esphome:
   name: ${name}
