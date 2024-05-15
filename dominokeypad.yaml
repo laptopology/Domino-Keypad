@@ -64,6 +64,7 @@ light:
               green: 50%
               blue: 50%
               duration: 500ms
+            - state: true
               brightness: 100%
               red: 50%
               green: 50%
@@ -89,6 +90,7 @@ light:
               green: 0%
               blue: 0%
               duration: 500ms
+            - state: true
               brightness: 100%
               red: 0%
               green: 0%
