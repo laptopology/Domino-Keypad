@@ -56,7 +56,44 @@ light:
   name: "Status LED"
   effects:
       - strobe:
-      - pulse:
+          name: Delay Timer
+          colors:
+            - state: true
+              brightness: 100%
+              red: 0%
+              green: 50%
+              blue: 50%
+              duration: 500ms
+              brightness: 100%
+              red: 50%
+              green: 50%
+              blue: 0%
+              duration: 500ms
+      - strobe:
+          name: Active Blue
+          colors:
+            - state: true
+              brightness: 100%
+              red: 0%
+              green: 0%
+              blue: 100%
+              duration: 100ms
+            - state: false
+              duration: 1000ms
+      - strobe:
+          name: Triggered Police
+          colors:
+            - state: true
+              brightness: 100%
+              red: 100%
+              green: 0%
+              blue: 0%
+              duration: 500ms
+              brightness: 100%
+              red: 0%
+              green: 0%
+              blue: 100%
+              duration: 500ms
 switch:
 - platform: template
   name: "Buzzer enabled"
@@ -78,7 +115,6 @@ output:
     id: buzzer
 rtttl:
   output: buzzer
-
 select:
   - platform: template
     name: "Select song"
