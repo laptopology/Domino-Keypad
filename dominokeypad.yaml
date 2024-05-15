@@ -116,10 +116,10 @@ select:
       - Take On Me
       - Mario
     initial_option: "2 short beeps"
-    optimistic: true
-    #set_action:
-    #  then:
-    #    lambda: id(select_song).publish_state(x);
+    #optimistic: true
+    set_action:
+      then:
+        lambda: id(select_song).publish_state(x);
 button:
   - platform: restart
     name: "Restart"
