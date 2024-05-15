@@ -21,9 +21,15 @@ esp32:
   framework:
     type: arduino
 logger:
-# we disable logging because we listen to RX (GPIO3) pin directly
-#  baud_rate: 0
+ level: INFO
 api:
+  services:
+    - service: keypad_play_rtttl
+      variables:
+        song_str: string
+      then:
+        - rtttl.play:
+            rtttl: !lambda 'return song_str;'  
 ota:
 wifi:
   ap:
@@ -51,8 +57,6 @@ light:
   effects:
       - strobe:
       - pulse:
-      - flicker:
-# Define switches to control LED and buzzer by HA automations
 switch:
 - platform: template
   name: "Buzzer enabled"
@@ -127,16 +131,16 @@ button:
   - platform: template
     name: "Play Song"
     on_press: 
-      - if:
-          condition:
-            - switch.is_on: led_enabled
-          then:
-            - light.turn_on:
-                id: keypad_led
-                brightness: 100%
-                effect: pulse
-            - delay: 10s
-            - light.turn_off: keypad_led
+      #- if:
+      #    condition:
+      #      - switch.is_on: led_enabled
+      #    then:
+      #      - light.turn_on:
+      #          id: keypad_led
+      #          brightness: 100%
+      #          effect: pulse
+      #      - delay: 10s
+      #      - light.turn_off: keypad_led
       - if:
           condition:
             - switch.is_on: buzzer_enabled
