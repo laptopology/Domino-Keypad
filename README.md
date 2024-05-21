@@ -16,9 +16,10 @@ Keypad rows and columns connection config is inside keypad.h custom library. Loo
 ### Bonus: A lot of rtttl songs and a service for playing whatever 
 ### To do: upload scematics and stl files
 
-_Future(?): [2-factor-auth] a bluetooth proxy could be used for "friendly" person detection (up to 3 users) to avoid code theft and miss-use of the keypad_
-_use more than 1 led just to spice up the looks_
-_use a media player intergration and a good amplified speaker to anounce various messages_
-_intergrate a full voice assistant ...or not!_
-_There is some room for including an NFC tag reader_
-_Fingerprint sensor(?)_
+_Future(?): [2-factor-auth] a bluetooth proxy could be used for "friendly" person detection (up to 3 users) to avoid code theft and miss-use of the keypad
+use more than 1 led just to spice up the looks
+use a media player intergration and a good amplified speaker to anounce various messages
+intergrate a full voice assistant ...or not!
+There is some room for including an NFC tag reader
+Fingerprint sensor(?)
+Camera(?)_
